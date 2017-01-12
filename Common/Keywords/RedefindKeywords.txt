@@ -7,7 +7,6 @@ Library           String
 Library           OperatingSystem
 
 *** Variables ***
-${Lang}           ${ar_LANG}
 
 *** Keywords ***
 Click Web Element
