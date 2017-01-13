@@ -41,6 +41,10 @@ Wait Web Until Page Contains Element
     [Arguments]    ${locator}    ${timeout}=${lo_general_timeout}
     Selenium2Library.Wait Until Page Contains Element    ${locator}    ${timeout}
 
+Wait Web Until Page Element Visible
+    [Arguments]    ${locator}    ${timeout}=${lo_general_timeout}
+    Selenium2Library.Wait Until Element Is Visible    ${locator}    ${timeout}
+
 Get Web Elements
     [Arguments]    ${locator}
     ${elements}    Selenium2Library.Get Webelements    ${locator}
