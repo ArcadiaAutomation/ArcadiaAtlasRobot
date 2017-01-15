@@ -1,0 +1,11 @@
+*** Settings ***
+Library           String
+
+*** Keywords ***
+Capture Screen with Specific name
+    ${screenshot_index}=    Get Variable Value    ${screenshot_index}    ${0}
+    Set Global Variable    ${screenshot_index}    ${screenshot_index.__add__(1)}
+    @{SplitTestCase}    Split String    ${SUITE_NAME}    .
+    ${NameTestCase}    Set Variable    @{SplitTestCase}[3]
+    ${Type}    Set Variable    @{splitTestCase}[2]
+    Run Keyword And Ignore Error    Selenium2Library.Capture Page Screenshot    screenshot-Selenium-${Type}-${NameTestCase}-${screenshot_index}-${Lang}.png

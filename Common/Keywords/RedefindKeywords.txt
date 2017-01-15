@@ -7,6 +7,7 @@ Library           String
 Library           OperatingSystem
 
 *** Variables ***
+${Lang}           ${ar_LANG}
 
 *** Keywords ***
 Click Web Element
@@ -95,9 +96,7 @@ Register Keyword For Run On Failure
 Capture ScreenShot
     ${screenshot_index}=    Get Variable Value    ${screenshot_index}    ${0}
     Set Global Variable    ${screenshot_index}    ${screenshot_index.__add__(1)}
-    Comment    ${time}=    Evaluate    str(time.time())    time
     Selenium2Library.Capture Page Screenshot    screenshot-Selenium-${TEST NAME}-${screenshot_index}.png
-    Comment    ${Selenium}    Run Keyword And Return Status    Selenium2Library.Capture Page Screenshot    screenshot-Selenium-${ID_TestCase}-${Lang}.png
 
 Open Web Browser
     [Arguments]    ${url}    ${Browser}    ${ipSelenium}
@@ -139,3 +138,16 @@ Open Firefox Browser
 Close Firefox Browser
     Evaluate    sys.modules['os'].system('taskkill /f /im plugin-container.exe')    sys, os
     Selenium2Library.Close Browser
+
+Scroll Web To Element
+    [Arguments]    ${locator}    ${direction}=down
+    Wait Web Until Page Element Visible    ${locator}
+    ${target}    Get Vertical Position    ${locator}
+    Execute JavaScript    window.scrollTo(0, ${target})
+
+Scroll Web To Element UP
+    [Arguments]    ${locator}    ${direction}=down
+    Wait Web Until Page Element Visible    ${locator}
+    ${target}    Get Vertical Position    ${locator}
+    ${targetUp}    Convert To Integer    -${target}
+    Execute JavaScript    window.scrollTo(0, ${targetUp})
