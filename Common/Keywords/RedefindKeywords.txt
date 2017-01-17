@@ -140,14 +140,12 @@ Close Firefox Browser
     Selenium2Library.Close Browser
 
 Scroll Web To Element
-    [Arguments]    ${locator}    ${direction}=down
+    [Arguments]    ${locator}
     Wait Web Until Page Element Visible    ${locator}
     ${target}    Get Vertical Position    ${locator}
-    Execute JavaScript    window.scrollTo(0, ${target})
-
-Scroll Web To Element UP
-    [Arguments]    ${locator}    ${direction}=down
-    Wait Web Until Page Element Visible    ${locator}
-    ${target}    Get Vertical Position    ${locator}
-    ${targetUp}    Convert To Integer    -${target}
-    Execute JavaScript    window.scrollTo(0, ${targetUp})
+    ${width}    ${height}    Get Element Size    ${locator}
+    ${element}    Run Keyword If    ${height}>=1000    Evaluate    ${target}-${height}
+    ${element}    Run Keyword If    ${height}>=100    Evaluate    ${target}-(${height}*2)
+    ${element}    Run Keyword If    ${height}>=10    Evaluate    ${target}-(${height}*4)
+    ${element}    Run Keyword If    ${height}>=1    Evaluate    ${target}-(${height}*8)
+    Execute JavaScript    window.scrollTo(0, ${element})
