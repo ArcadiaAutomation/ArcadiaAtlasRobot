@@ -96,7 +96,12 @@ Register Keyword For Run On Failure
 Capture ScreenShot
     ${screenshot_index}=    Get Variable Value    ${screenshot_index}    ${0}
     Set Global Variable    ${screenshot_index}    ${screenshot_index.__add__(1)}
-    Selenium2Library.Capture Page Screenshot    screenshot-Selenium-${TEST NAME}-${screenshot_index}.png
+    @{SplitTestSuite}    Split String    ${SUITE_NAME}    .
+    ${Test}    Run Keyword If    '${ar_RUN}'=='pabot'    Set Variable    @{SplitTestSuite}[0]
+    ...    ELSE    Set Variable    @{SplitTestSuite}[2]
+    @{SplitTestCase}    Split String    ${TEST_NAME}    _
+    ${numberTestCase}    Set Variable    @{SplitTestCase}[0]
+    Selenium2Library.Capture Page Screenshot    screenshot-Selenium-${Test}-${numberTestCase}-${Lang}-${ar_testType}-${screenshot_index}.png
 
 Open Web Browser
     [Arguments]    ${url}    ${Browser}    ${ipSelenium}
@@ -144,11 +149,9 @@ Scroll Web To Element
     Wait Web Until Page Element Visible    ${locator}
     ${target}    Get Vertical Position    ${locator}
     ${width}    ${height}    Get Element Size    ${locator}
-    ${element}    Run Keyword If    ${height}>=1000    Evaluate    ${target}-${height}
-    ...    ELSE IF    ${height}>=100    Evaluate    ${target}-(${height}*2)
-    ...    ELSE IF    ${height}>=10    Evaluate    ${target}-(${height}*4)
-    ...    ELSE IF    ${height}>=1    Evaluate    ${target}-(${height}*8)
-    Execute JavaScript    window.scrollTo(0, ${element})
+    ${element}    Evaluate    ${target}-150
+    Run Keyword If    ${element}<0    Execute JavaScript    window.scrollTo(0, 0)
+    ...    ELSE    Execute JavaScript    window.scrollTo(0, ${element})
 
 Web Element Regexp Matches
     [Arguments]    ${expect}    ${actual}
@@ -156,3 +159,14 @@ Web Element Regexp Matches
     Get Regexp Matches    ${expect}    ${actual}
     Log    ${expect}
     Log    ${actual}
+
+Should Be Text In Element
+    [Arguments]    ${locator}
+    Wait Web Until Page Element Visible    ${locator}
+    Should Not Be Empty    ${locator}
+
+Web Get Element Attribute
+    [Arguments]    ${locator}    ${attribute}
+    Wait Web Until Page Element Visible    ${locator}
+    ${arg}    Get Element Attribute    ${locator}@${attribute}
+    [Return]    ${arg}
