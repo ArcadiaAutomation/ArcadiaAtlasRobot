@@ -98,7 +98,7 @@ Capture ScreenShot
     Set Global Variable    ${screenshot_index}    ${screenshot_index.__add__(1)}
     @{SplitTestSuite}    Split String    ${SUITE_NAME}    .
     ${Test}    Run Keyword If    '${ar_RUN}'=='pabot'    Set Variable    @{SplitTestSuite}[0]
-    ...    ELSE    Set Variable    @{SplitTestSuite}[2]
+    ...    ELSE    Set Variable    @{SplitTestSuite}[0]
     @{SplitTestCase}    Split String    ${TEST_NAME}    _
     ${numberTestCase}    Set Variable    @{SplitTestCase}[0]
     Selenium2Library.Capture Page Screenshot    screenshot-Selenium-${Test}-${numberTestCase}-${Lang}-${ar_testType}-${screenshot_index}.png
